@@ -16,3 +16,18 @@ export const getUsers = () => {
 export const getUserById = (id: string): User | undefined => {
   return users.find((user) => user.id === id);
 };
+
+export const createUser = (
+  username: string,
+  age: number,
+  hobbies: string[]
+): User => {
+  const newUser: User = {
+    id: uuidv4(),
+    username,
+    age,
+    hobbies,
+  };
+  users.push(newUser);
+  return newUser;
+};

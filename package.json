@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "build": "npm run clean && tsc",
-    "start:build": "npm run build && node dist/index.js",
+    "start:prod": "npm run build && node dist/index.js",
     "start:dev": "ts-node-dev --respawn src/index.ts",
     "lint": "eslint . --ext .ts"
   },
