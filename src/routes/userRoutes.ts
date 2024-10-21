@@ -3,6 +3,7 @@ import {
   getUserById,
   createUser,
   updateUser,
+  deleteUser,
 } from '../userData/userData';
 import { validateUUID } from '../utils/validateUUID';
 
@@ -63,14 +64,8 @@ const userRoutes = async (req: any, res: any) => {
       return;
     }
 
-    const user = getUserById(userId);
-    if (!user) {
-      res.writeHead(404, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ message: 'User not found' }));
-      return;
-    }
-
     let body = '';
+
     req.on('data', (chunk: any) => {
       body += chunk.toString();
     });
@@ -78,18 +73,14 @@ const userRoutes = async (req: any, res: any) => {
     req.on('end', () => {
       try {
         const updatedUserData = JSON.parse(body);
+        const updatedUser = updateUser(userId, updatedUserData);
 
-        if (
-          !updatedUserData.username &&
-          typeof updatedUserData.age !== 'number' &&
-          !Array.isArray(updatedUserData.hobbies)
-        ) {
-          res.writeHead(400, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ message: 'Invalid input data' }));
+        if (!updatedUser) {
+          res.writeHead(404, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ message: 'User not found' }));
           return;
         }
 
-        const updatedUser = updateUser(userId, updatedUserData);
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify(updatedUser));
       } catch (error) {
@@ -97,6 +88,25 @@ const userRoutes = async (req: any, res: any) => {
         res.end(JSON.stringify({ message: 'Invalid JSON format' }));
       }
     });
+  } else if (req.method === 'DELETE' && req.url?.startsWith('/api/users/')) {
+    const userId = req.url.split('/')[3];
+
+    if (!validateUUID(userId)) {
+      res.writeHead(400, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ message: 'Invalid UUID format' }));
+      return;
+    }
+
+    const user = getUserById(userId);
+
+    if (!user) {
+      res.writeHead(404, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ message: 'User not found' }));
+    } else {
+      deleteUser(userId);
+      res.writeHead(204);
+      res.end();
+    }
   } else {
     res.writeHead(404, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ message: 'Not Found' }));

@@ -44,3 +44,12 @@ export const updateUser = (
   }
   return undefined;
 };
+
+export const deleteUser = (id: string): boolean => {
+  const userIndex = users.findIndex((user) => user.id === id);
+  if (userIndex !== -1) {
+    users.splice(userIndex, 1);
+    return true;
+  }
+  return false;
+};
