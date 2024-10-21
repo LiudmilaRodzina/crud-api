@@ -20,7 +20,7 @@
    npm install
    ```
 3. **Environment Variables**:
-   - Copy the `.env.sample` file to `.env` and set the desired port (default is 3000)
+   - Copy the `.env.sample` file to `.env` and set the desired port (default is 4000)
 
 ### Build and Run
 
