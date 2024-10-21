@@ -68,3 +68,20 @@ The API handles errors and returns appropriate HTTP status codes:
 - **400 Bad Request**: Returned for invalid requests or data formats
 - **404 Not Found**: Returned when a requested user or endpoint does not exist
 - **500 Internal Server Error**: Returned for unexpected server issues
+
+### Testing
+
+The API is tested using Jest and Supertest to ensure that all endpoints function as expected. The tests cover various scenarios including:
+
+- **Retrieving all users**: Tests that the API returns an empty array when no users exist
+- **Creating a new user**: Verifies that a new user can be created successfully and the response contains the correct data
+- **Retrieving a specific user by ID**: Checks that the created user can be retrieved correctly using their unique ID
+- **Updating an existing user**: Ensures that an existing user can be updated and the updated data is returned
+- **Deleting a user**: Tests that a user can be deleted successfully and that attempting to retrieve the deleted user returns a 404 status code
+- **Error handling**: Validates that appropriate error messages and status codes are returned for invalid requests
+
+To run the tests, use the following command:
+
+```bash
+npm test
+```
