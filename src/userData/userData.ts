@@ -31,3 +31,16 @@ export const createUser = (
   users.push(newUser);
   return newUser;
 };
+
+export const updateUser = (
+  id: string,
+  updatedUserData: Partial<User>
+): User | undefined => {
+  const userIndex = users.findIndex((user) => user.id === id);
+  if (userIndex !== -1) {
+    const updatedUser = { ...users[userIndex], ...updatedUserData };
+    users[userIndex] = updatedUser;
+    return updatedUser;
+  }
+  return undefined;
+};
